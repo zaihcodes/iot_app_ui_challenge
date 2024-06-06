@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iot_app_ui_challenge/screens/home_screen.dart';
+import 'package:iot_app_ui_challenge/screens/home/home_screen.dart';
 
 void main() {
   runApp(const MyApp());

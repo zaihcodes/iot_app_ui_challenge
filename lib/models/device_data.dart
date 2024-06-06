@@ -23,4 +23,8 @@ class DeviceData {
         color: "#c207db",
         icon: 'assets/svg/speaker.svg'),
   ];
+
+  static toggleActive(int index){
+    devices[index].isActive = !devices[index].isActive;
+  }
 }

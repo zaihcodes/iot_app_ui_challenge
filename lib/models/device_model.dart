@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 class DeviceModel {
   String name = "";
   String color = "";
@@ -24,5 +26,15 @@ class DeviceModel {
     data['isActive'] = isActive;
     data['icon'] = icon;
     return data;
+  }
+
+  getColor() {
+    var hexColor = color.replaceAll("#", "");
+    if (hexColor.length == 6) {
+      hexColor = "FF$hexColor";
+    }
+    if (hexColor.length == 8) {
+      return Color(int.parse("0x$hexColor"));
+    }
   }
 }

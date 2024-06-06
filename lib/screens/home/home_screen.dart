@@ -4,9 +4,44 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iot_app_ui_challenge/models/device_data.dart';
 import 'package:iot_app_ui_challenge/models/device_model.dart';
+import 'package:iot_app_ui_challenge/screens/home/widgets/device_widget.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  List<DeviceModel> devices = [
+    DeviceModel(
+        name: 'Smart Spotlight',
+        isActive: true,
+        color: "#ff5f5f",
+        icon: 'assets/svg/light.svg'),
+    DeviceModel(
+        name: 'Smart AC',
+        isActive: true,
+        color: "#7739ff",
+        icon: 'assets/svg/ac.svg'),
+    DeviceModel(
+        name: 'Smart TV',
+        isActive: false,
+        color: "#c9c306",
+        icon: 'assets/svg/tv.svg'),
+    DeviceModel(
+        name: 'Smart Sound',
+        isActive: false,
+        color: "#c207db",
+        icon: 'assets/svg/speaker.svg'),
+  ];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -35,12 +70,12 @@ class HomeScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      'Hi, Zaihcodes',
-                      style: TextStyle(
-                          fontSize: 30,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold),
-                    ),
+                        'Hi, Zaihcodes',
+                        style: TextStyle(
+                            fontSize: 30,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold),
+                      ),
                     Spacer(),
                     Icon(
                       Icons.person,
@@ -108,9 +143,19 @@ class HomeScreen extends StatelessWidget {
                               childAspectRatio: 0.65,
                             ),
                             itemBuilder: (context, index) {
-                              final device = DeviceData.devices[index];
-                              return DeviceCard(
-                                device: device,
+                              final bgColor = int.parse('0xFF${devices[index].color.replaceAll('#', '')}');
+                              return DevicesWidget(
+                                name: devices[index].name,
+                                svg: devices[index].icon,
+                                color: Color(bgColor),
+                                isActive: devices[index].isActive,
+                                device: devices[index],
+                                onChanged: (val) {
+                                  setState(() {
+                                    devices[index].isActive =
+                                    !devices[index].isActive;
+                                  });
+                                },
                               );
                             },
                           ),
@@ -119,6 +164,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+                SizedBox(height: 30,),
               ],
             ),
           ),
@@ -128,69 +174,7 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class DeviceCard extends StatefulWidget {
-  const DeviceCard({
-    required this.device,
-    super.key,
-  });
 
-  final DeviceModel device;
 
-  @override
-  State<DeviceCard> createState() => _DeviceCardState();
-}
 
-class _DeviceCardState extends State<DeviceCard> {
-  late bool isOn;
-  @override
-  void initState() {
-    super.initState();
-    isOn = widget.device.isActive;
-  }
 
-  @override
-  Widget build(BuildContext context) {
-    final bgColor = int.parse('0xFF${widget.device.color.replaceAll('#', '')}');
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 500),
-      decoration: BoxDecoration(
-          color: isOn ? Color(bgColor) : Colors.grey.shade200,
-          borderRadius: BorderRadius.circular(20)),
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SvgPicture.asset(
-              widget.device.icon,
-              height: 40,
-              // ignore: deprecated_member_use
-              color: isOn ? Colors.white : Colors.black,
-            ),
-            SizedBox(
-              width: 60,
-              child: Text(
-                widget.device.name,
-                maxLines: 2,
-                style: TextStyle(
-                  color: isOn ? Colors.white : Colors.black,
-                ),
-              ),
-            ),
-            CupertinoSwitch(
-              value: isOn,
-              onChanged: (value) {
-                setState(() {
-                  isOn = value;
-                });
-              },
-              trackColor: Colors.black,
-              activeColor: Colors.white.withOpacity(0.5),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
