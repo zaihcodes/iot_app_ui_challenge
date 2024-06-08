@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:iot_app_ui_challenge/models/device_model.dart';
+import 'package:iot_app_ui_challenge/screens/control_panel/control_panel_screen.dart';
 
 class DevicesWidget extends StatelessWidget {
   final String name;
@@ -35,10 +36,7 @@ class DevicesWidget extends StatelessWidget {
         closedShape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(20.0))),
         openBuilder: (BuildContext context, VoidCallback _) {
-          // return ControlPanelPage(tag: name);
-          return const Scaffold(
-            body: Center(child: Text('OPen'),),
-          );
+          return  ControlPanelScreen(tag: name,);
         },
         tappable: name == "Smart AC" ? true : false,
         closedBuilder: (BuildContext _, VoidCallback openContainer) {
